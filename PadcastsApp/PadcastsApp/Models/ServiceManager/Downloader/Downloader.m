@@ -69,13 +69,12 @@
 
 
 - (void)cancelTasksThatDontNeedToBeDone:(ItemObject*)task {
-    NSBlockOperation* operation = [self.operations objectForKey:task.guiD];
-    [operation cancel];
-     NSLog(@"operation before cancelled: %@",[self.operations objectForKey:task.guiD]);
+    [[self.operations objectForKey:task.guiD] cancel];
+
+//     NSLog(@"operation before cancelled: %@",[self.operations objectForKey:task.guiD]);
 //    [self.operations removeObjectForKey:task.guiD];
 //    NSLog(@"operation cancelled: %@",self.operations);
 }
-
 
 
 
@@ -95,6 +94,9 @@
     NSURLSessionDownloadTask* downloadTask = [session downloadTaskWithURL:url];
     [downloadTask resume];
 }
+
+
+
 
 
 //-(void)URLSession

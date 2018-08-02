@@ -68,8 +68,11 @@ static NSString * const kCoreDataBaseName = @"PadcastsApp";
 #pragma mark - CoreDataHandlingProtocol Methods
 //ADD
 - (void)saveItemIntoCoreData:(ItemObject *)item {
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kItemEntity inManagedObjectContext:self.persistentContainer.viewContext];
+    if (![self checkItemIsNew:item]) {
+        return;
+    }
     
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kItemEntity inManagedObjectContext:self.persistentContainer.viewContext];
     if (!entityDescription) {
         NSLog(@"could not find entity description");
         return;
@@ -78,6 +81,18 @@ static NSString * const kCoreDataBaseName = @"PadcastsApp";
     ItemMO* manageObject = [[ItemMO alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.persistentContainer.viewContext];
     [item configureManagedObject:manageObject];
     [self saveContext];
+}
+
+
+-(BOOL)checkItemIsNew:(ItemObject*)item {
+    NSArray* allCoredataItems = [self fetchAllItemsFromCoreData];
+    BOOL result = YES;
+    for (ItemObject* obj in allCoredataItems  ) {
+        if ([obj.guiD isEqualToString:item.guiD]) {
+            return  NO;
+        }
+    }
+    return result;
 }
 
 //DELETE

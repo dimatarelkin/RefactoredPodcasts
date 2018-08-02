@@ -10,6 +10,9 @@
 #import "ItemObject.h"
 //#import "CollectionViewControllerMaster.h"
 
+
+
+
 @interface DetailViewController : UIViewController
 -(void)itemWasSelected:(ItemObject *)item;
 

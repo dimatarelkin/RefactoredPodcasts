@@ -282,6 +282,8 @@ CGFloat multiplier = 0.5;
 
 }
 
+
+
 -(void)downloadAction:(UIButton*)button {
     [self changeButton:button forState:UIControlStateHighlighted animated:YES];
     [self changeButton:button forState:UIControlStateNormal animated:YES];
@@ -297,6 +299,9 @@ CGFloat multiplier = 0.5;
         _item.isSaved = NO;
         [self.downloadButton setTitle:@"Download" forState:UIControlStateNormal];
     }
+    
+    [[ServiceManager sharedManager].delegate reloadChangedDataOfCollectionView];
+    
 }
 
 

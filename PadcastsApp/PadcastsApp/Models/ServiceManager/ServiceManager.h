@@ -21,6 +21,7 @@ typedef enum {
 //delegate
 @protocol ServiceDownloadDelegate <NSObject>
 -(void)downloadingWasFinished:(NSArray*)result;
+-(void)reloadChangedDataOfCollectionView;
 @end
 
 //coreData offline mode

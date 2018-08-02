@@ -52,7 +52,6 @@
 }
 
 
-
 #pragma mark - CoreData offline mode
 -(void)saveDataItemsIntoCoreData:(NSArray<ItemObject*>*)items {
     [[CoreDataManager sharedManager] saveDataItemsIntoCoreData:items];

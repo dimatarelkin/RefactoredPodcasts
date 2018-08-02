@@ -8,6 +8,7 @@
 
 #import "Parser.h"
 #import "ServiceManager.h"
+#import "NSString+TrimmingCharacters.h"
 
 
 
@@ -17,6 +18,8 @@
 @property (strong, nonatomic) NSString * currentElement;
 @property (strong, nonatomic) NSMutableDictionary *resultObject;
 @property (assign, nonatomic) SourceType currentSourceType;
+@property (strong, nonatomic) NSMutableArray* arrayOfObjects;
+@property (strong, nonatomic) NSArray *tags;
 
 @end
 
@@ -110,37 +113,13 @@
     NSString * resultString;
     for ( NSString* tag in self.tags) {
         if ([self.currentElement isEqualToString:tag]) {
-            resultString = [self parseString:string];
+            resultString = [NSString parseString:string];
             [self.resultObject[tag] appendString:resultString];
         }
     }
 }
 
 
--(NSString*)parseString:(NSString*)string {
-    NSMutableString * resultString = [NSMutableString stringWithString:string];
-    NSRange range;
-//    [string stringByReplacingOccurrencesOfString:@"  " withString:@""];
-//    [string stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-//    [string stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-    
-    if ([resultString containsString:@"\n      "]) {
-        range = [resultString rangeOfString:@"\n      "];
-        [resultString deleteCharactersInRange:range];
-    }
-
-    if ([resultString containsString:@"  "]) {
-        range = [resultString rangeOfString:@"  "];
-        [resultString deleteCharactersInRange:range];
-    }
-
-    if ([resultString containsString:@"\n"]) {
-        range = [resultString rangeOfString:@"\n"];
-        [resultString deleteCharactersInRange:range];
-    }
-    
-    return [resultString copy];
-}
 
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(nullable NSString *)namespaceURI qualifiedName:(nullable NSString *)qName {
@@ -154,7 +133,6 @@
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     NSLog(@"parser error = %@",[parseError localizedDescription]);
 }
-
 
 
 

@@ -21,8 +21,6 @@
 @property (strong, nonatomic) UISegmentedControl* segmentedControl;
 @property (strong, nonatomic) DetailViewController* detail;
 
-
-
 @end
 
 
@@ -95,9 +93,10 @@ static NSString * const kMP3URL = @"http://rss.simplecast.com/podcasts/4669/rss"
         [self.dataSource addObjectsFromArray:self.parserData];
     }
     
-    
     [self.collectionView reloadData];
 }
+
+
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -120,7 +119,6 @@ static NSString * const kMP3URL = @"http://rss.simplecast.com/podcasts/4669/rss"
         cell.imageView.image = [[ServiceManager sharedManager] fetchImageFromSandBoxForItem:item];
         NSLog(@"from sandbox");
     } else {
-        
         [[ServiceManager sharedManager] downloadImageForItem:item
                                             withImageQuality:ImageQualityLow
                                          withCompletionBlock:^(NSData *data) {
@@ -150,15 +148,20 @@ static NSString * const kMP3URL = @"http://rss.simplecast.com/podcasts/4669/rss"
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
+
+
+#pragma Delegate methods
 -(void)downloadingWasFinished:(NSArray*)result {
     [self.dataSource removeAllObjects];
     [self.parserData addObjectsFromArray:result];
     [self.dataSource addObjectsFromArray:self.parserData];
-    
     [self.collectionView reloadData];
     NSLog(@"count = %lu",(unsigned long)self.dataSource.count);
 }
 
+-(void)reloadChangedDataOfCollectionView {
+    [self segmentedControlValueDidChange:self.segmentedControl];
+}
 
 
 #pragma mark <UICollectionViewDelegate>

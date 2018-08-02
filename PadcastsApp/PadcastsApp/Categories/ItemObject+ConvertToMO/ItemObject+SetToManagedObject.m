@@ -22,8 +22,7 @@
         self.details = manageObject.details;
         self.duration = manageObject.duration;
         self.sourceType = (NSInteger)manageObject.sourceType == 0 ? MP3SourceType : TEDSourceType;
-        self.publicationDate = [NSDate stringFromDate:manageObject.pubDate];
-        
+        self.publicationDate = [NSDate stringFromDate:manageObject.pubDate]; 
         content.localLink = manageObject.contentLocalLink;
         content.webLink = manageObject.contentWebLink;
         img.localLink = manageObject.imageLocalLink;

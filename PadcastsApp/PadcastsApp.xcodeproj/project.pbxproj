@@ -11,6 +11,8 @@
 		322DB221210D0F150066FBAD /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 322DB220210D0F150066FBAD /* AVKit.framework */; };
 		6214F9DE211317DE00FE71D9 /* NSDate+ConvertToString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6214F9DD211317DE00FE71D9 /* NSDate+ConvertToString.m */; };
 		6214F9E3211319B700FE71D9 /* ItemObject+SetToManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6214F9E2211319B700FE71D9 /* ItemObject+SetToManagedObject.m */; };
+		6214F9F1211330E300FE71D9 /* NSString+TrimmingCharacters.m in Sources */ = {isa = PBXBuildFile; fileRef = 6214F9F0211330E300FE71D9 /* NSString+TrimmingCharacters.m */; };
+		6214F9F421134FAE00FE71D9 /* MyOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6214F9F321134FAE00FE71D9 /* MyOperation.m */; };
 		624A28E52105E392004FF7BC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 624A28E42105E392004FF7BC /* AppDelegate.m */; };
 		624A28EB2105E392004FF7BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 624A28E92105E392004FF7BC /* Main.storyboard */; };
 		624A28EE2105E392004FF7BC /* PadcastsApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 624A28EC2105E392004FF7BC /* PadcastsApp.xcdatamodeld */; };
@@ -40,6 +42,10 @@
 		6214F9DD211317DE00FE71D9 /* NSDate+ConvertToString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ConvertToString.m"; sourceTree = "<group>"; };
 		6214F9E1211319B700FE71D9 /* ItemObject+SetToManagedObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ItemObject+SetToManagedObject.h"; sourceTree = "<group>"; };
 		6214F9E2211319B700FE71D9 /* ItemObject+SetToManagedObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ItemObject+SetToManagedObject.m"; sourceTree = "<group>"; };
+		6214F9EF211330E200FE71D9 /* NSString+TrimmingCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TrimmingCharacters.h"; sourceTree = "<group>"; };
+		6214F9F0211330E300FE71D9 /* NSString+TrimmingCharacters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TrimmingCharacters.m"; sourceTree = "<group>"; };
+		6214F9F221134FAE00FE71D9 /* MyOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyOperation.h; sourceTree = "<group>"; };
+		6214F9F321134FAE00FE71D9 /* MyOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyOperation.m; sourceTree = "<group>"; };
 		624A28E02105E392004FF7BC /* PadcastsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PadcastsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		624A28E32105E392004FF7BC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		624A28E42105E392004FF7BC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 		6214F9DF211317E500FE71D9 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				6214F9EE211330B300FE71D9 /* NSString+Trim */,
 				6214F9E421131B8400FE71D9 /* ItemObject+ConvertToMO */,
 				6214F9E0211317F200FE71D9 /* NSDate+ConvertingToString */,
 			);
@@ -128,6 +135,15 @@
 			path = "ItemObject+ConvertToMO";
 			sourceTree = "<group>";
 		};
+		6214F9EE211330B300FE71D9 /* NSString+Trim */ = {
+			isa = PBXGroup;
+			children = (
+				6214F9EF211330E200FE71D9 /* NSString+TrimmingCharacters.h */,
+				6214F9F0211330E300FE71D9 /* NSString+TrimmingCharacters.m */,
+			);
+			path = "NSString+Trim";
+			sourceTree = "<group>";
+		};
 		624A28D72105E392004FF7BC = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +166,8 @@
 			children = (
 				624A28E32105E392004FF7BC /* AppDelegate.h */,
 				624A28E42105E392004FF7BC /* AppDelegate.m */,
+				6214F9F221134FAE00FE71D9 /* MyOperation.h */,
+				6214F9F321134FAE00FE71D9 /* MyOperation.m */,
 				6214F9DF211317E500FE71D9 /* Categories */,
 				629A96E421077F47004E809B /* Controllers */,
 				62BEF46A210871B30047D450 /* Cells */,
@@ -413,6 +431,8 @@
 				624A28E52105E392004FF7BC /* AppDelegate.m in Sources */,
 				629A96EA210780B7004E809B /* DetailViewController.m in Sources */,
 				624A292621060F5A004FF7BC /* Image.m in Sources */,
+				6214F9F421134FAE00FE71D9 /* MyOperation.m in Sources */,
+				6214F9F1211330E300FE71D9 /* NSString+TrimmingCharacters.m in Sources */,
 				624A292321060F4C004FF7BC /* Content.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

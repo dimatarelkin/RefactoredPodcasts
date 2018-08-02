@@ -74,7 +74,7 @@ static NSString * const kDirectory = @"Images";
 - (UIImage *)fetchImageFromSandBoxForItem:(ItemObject *)item {
     
     if ([self.fileManager fileExistsAtPath:item.image.localLink]) {
-        NSLog(@"local path = %@", item.image.localLink);
+//        NSLog(@"local path = %@", item.image.localLink);
         NSData *data = [NSData dataWithContentsOfFile:item.image.localLink];
         return [UIImage imageWithData:data];
     } else {

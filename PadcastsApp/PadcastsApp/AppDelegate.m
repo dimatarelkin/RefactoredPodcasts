@@ -25,14 +25,10 @@
     
     UICollectionViewFlowLayout *flow = [[UICollectionViewFlowLayout alloc] init];
     CollectionViewControllerMaster *master = [[CollectionViewControllerMaster alloc] initWithCollectionViewLayout:flow];
-
-    
     DetailViewController * detail = [[DetailViewController alloc] init];
 
     UINavigationController * nav =[[UINavigationController alloc]  initWithRootViewController:master];
-    
     UINavigationController * navDetail = [[UINavigationController alloc] initWithRootViewController:detail];
-    
 
     SplitController* splitViewController = [[SplitController alloc] init];
     [splitViewController setViewControllers:@[nav,navDetail]];
@@ -40,7 +36,6 @@
     
     detail.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem;
     detail.navigationItem.leftItemsSupplementBackButton = YES;
-   
     
     [self.window setRootViewController:splitViewController];
     [self.window makeKeyAndVisible];
