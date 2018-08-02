@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="ItemMO" representedClassName="ItemMO" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contentLocalLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contentWebLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="guid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageLocalLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageWebLink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSaved" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pubDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sourceType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ItemMO" positionX="-281" positionY="-499" width="128" height="223"/>
+    </elements>
+</model>

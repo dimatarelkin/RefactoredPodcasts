@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yqj-cB-jYG">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Detail View Controller-->
+        <scene sceneID="kuM-gF-cjI">
+            <objects>
+                <viewController id="hq9-as-R9c" customClass="DetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JXn-vJ-fAw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView verifyAmbiguity="off" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uP7-iC-ChI">
+                                <rect key="frame" x="0.0" y="64" width="375" height="504"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="video_placeholder3" translatesAutoresizingMaskIntoConstraints="NO" id="pZB-2l-JC8">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="227"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="W5f-pZ-SNZ">
+                                        <rect key="frame" x="20" y="247" width="280" height="1135"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Cool Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOd-0v-bi0">
+                                                <rect key="frame" x="0.0" y="0.0" width="280" height="22.5"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For disabling the horizontal scroll, you can set the content " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUw-Al-TyN">
+                                                <rect key="frame" x="0.0" y="32.5" width="280" height="101"/>
+                                                <fontDescription key="fontDescription" name="BodoniSvtyTwoSCITCTT-Book" family="Bodoni 72 Smallcaps" pointSize="28"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 Apr 2018 17.55" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vkc-kq-cDO">
+                                                <rect key="frame" x="0.0" y="143.5" width="280" height="22.5"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="17"/>
+                                                <color key="textColor" red="0.52046227331606221" green="0.52046227331606221" blue="0.52046227331606221" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRV-gT-gl4">
+                                                <rect key="frame" x="0.0" y="176" width="280" height="36"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <state key="normal" title="Download"/>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xxd-hq-unI">
+                                                <rect key="frame" x="0.0" y="222" width="280" height="913"/>
+                                                <string key="text">DescriptionowqhfighfhffhwuhfquwhfiouwhfihwiowhwhfowhgfohwgfohwgfohgwfowgogwioghwoghwfogfogfwhfwiuhwhwoiwhufThe UIScrollView just needs to understand how much width and space it has inside it. So it needs to have something pinned to the Leading, Trailing, Top &amp; Bottom constraints. Also the width and height of the content needs to be fixed (this does not mean I have to specificy it. I can still use constraints to achieve this.)
+Add a UIScrollView and position as required.
+Add a UIView inside the UIScrollView for the content.
+Set the Leading, Trailing, Top &amp; Bottom constraints of the content UIView to be 0.
+Add an Equal Width constraint to the UIScrollView and UIView. This will make it vertically scrolling only.
+You now need to set the height of the content UIView. You can then either specify the height of the content view (blech) or use the height of the controls contained within by making sure the bottom control is constrained to the bottom of the content view.I am using the interface builder. I changed the constraint left and right to -16 and it worked. I don't believe its the correct behavior. Is there a way to make it work with 0? – Gasim Sep 22 '14 at 20:15
+I'm not as familiar with interface builder. I typically use the constraintsWithVisualFormat method in code. But, maybe try to remove the constraints for the contentView. I normally set the contentView size in 
+</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.010929404145077704" green="0.010929404145077704" blue="0.010929404145077704" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="W5f-pZ-SNZ" secondAttribute="bottom" id="6Nv-8Y-HQc"/>
+                                    <constraint firstItem="pZB-2l-JC8" firstAttribute="top" secondItem="uP7-iC-ChI" secondAttribute="top" id="Tna-XS-kWq"/>
+                                    <constraint firstItem="W5f-pZ-SNZ" firstAttribute="top" secondItem="pZB-2l-JC8" secondAttribute="bottom" constant="19.999999999999943" id="g1d-Gd-dlO"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="uP7-iC-ChI" firstAttribute="top" secondItem="V0j-bg-FHw" secondAttribute="top" id="8Mm-Hh-IWe"/>
+                            <constraint firstItem="uP7-iC-ChI" firstAttribute="leading" secondItem="V0j-bg-FHw" secondAttribute="leading" id="ALg-R4-aCK"/>
+                            <constraint firstItem="pZB-2l-JC8" firstAttribute="height" secondItem="JXn-vJ-fAw" secondAttribute="height" multiplier="0.5" priority="999" id="XpJ-rF-wPl"/>
+                            <constraint firstItem="uP7-iC-ChI" firstAttribute="bottom" secondItem="V0j-bg-FHw" secondAttribute="bottom" id="cXN-Qh-B4X"/>
+                            <constraint firstItem="pZB-2l-JC8" firstAttribute="height" secondItem="JXn-vJ-fAw" secondAttribute="height" id="fAz-kQ-vZV"/>
+                            <constraint firstItem="pZB-2l-JC8" firstAttribute="height" secondItem="JXn-vJ-fAw" secondAttribute="height" multiplier="0.4" id="g2R-XZ-MxL"/>
+                            <constraint firstItem="uP7-iC-ChI" firstAttribute="trailing" secondItem="V0j-bg-FHw" secondAttribute="trailing" id="ggR-3e-UiH"/>
+                            <constraint firstItem="W5f-pZ-SNZ" firstAttribute="leading" secondItem="V0j-bg-FHw" secondAttribute="leading" constant="20" id="kos-LJ-U34"/>
+                            <constraint firstItem="V0j-bg-FHw" firstAttribute="trailing" secondItem="pZB-2l-JC8" secondAttribute="trailing" id="m5t-q7-HmF"/>
+                            <constraint firstItem="W5f-pZ-SNZ" firstAttribute="trailing" secondItem="V0j-bg-FHw" secondAttribute="trailing" constant="-20" id="qsP-4z-0BW"/>
+                            <constraint firstItem="pZB-2l-JC8" firstAttribute="leading" secondItem="V0j-bg-FHw" secondAttribute="leading" id="wDO-Iu-T0N"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="V0j-bg-FHw"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="XpJ-rF-wPl"/>
+                                <exclude reference="fAz-kQ-vZV"/>
+                                <exclude reference="g2R-XZ-MxL"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="g2R-XZ-MxL"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="fAz-kQ-vZV"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="XpJ-rF-wPl"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="91D-cW-pDc">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="72e-do-Iyb">
+                            <rect key="frame" x="99.5" y="7.5" width="121" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                        </segmentedControl>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="THq-Qa-lJQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1723.1884057971015" y="87.228260869565219"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="JEW-gW-ZWR">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yqj-cB-jYG" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Siz-fk-KJr">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hq9-as-R9c" kind="relationship" relationship="rootViewController" id="nSe-Fu-j7W"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7ze-uQ-tnd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="815.94202898550736" y="87.228260869565219"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="video_placeholder3" width="426" height="240"/>
+    </resources>
+</document>
