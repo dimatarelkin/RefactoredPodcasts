@@ -50,6 +50,7 @@ static NSString * const kMP3URL = @"http://rss.simplecast.com/podcasts/4669/rss"
     self.navigationController.navigationBar.barTintColor = UIColor.whiteColor;
     
     
+    
     self.collectionView.backgroundColor = UIColor.whiteColor;
     self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.delegate = self;
@@ -65,7 +66,6 @@ static NSString * const kMP3URL = @"http://rss.simplecast.com/podcasts/4669/rss"
     [self.collectionView registerClass:[CollectionVewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     //detailVC
-    self.detail = [[DetailViewController alloc] init];
     
     NSURL* urlMP3 = [NSURL URLWithString:kMP3URL];
     NSURL* urlTED = [NSURL URLWithString:kTedURL];
@@ -181,6 +181,7 @@ static NSString * const kMP3URL = @"http://rss.simplecast.com/podcasts/4669/rss"
 
     [self.collectionView cellForItemAtIndexPath:indexPath].backgroundColor = UIColor.whiteColor;
     ItemObject *item = [self.dataSource objectAtIndex:indexPath.row];
+    self.detail = [[DetailViewController alloc] init];
     [self.detail itemWasSelected:item];
     [self.splitViewController showDetailViewController:self.detail sender:self];
     

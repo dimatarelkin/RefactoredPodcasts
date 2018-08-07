@@ -40,24 +40,12 @@
 
 - (void)downloadDataFromURL:(NSURL *)url {
     
-    NSURLSession* session = [NSURLSession sharedSession];
-    NSURLSessionDownloadTask *downloadTask =
-    [session downloadTaskWithURL:url completionHandler:^(NSURL *  location, NSURLResponse *  response, NSError *  error) {
-
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-             NSData* data = [NSData dataWithContentsOfURL:location];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.xmlParser = [[NSXMLParser alloc] initWithData:data];
-                self.xmlParser.delegate = self;
-                [self.xmlParser parse];
-            });
-        });
+    [[ServiceManager sharedManager] downloadXMLFileFormURL:url.absoluteString withCompletionBlock:^(NSData *data) {
+        self.xmlParser = [[NSXMLParser alloc] initWithData:data];
+        self.xmlParser.delegate = self;
+        [self.xmlParser parse];
     }];
-    [downloadTask resume];
 }
-
-
 
 #pragma mark - NSXMLParserDelegate
 - (void)parserDidStartDocument:(NSXMLParser *)parser {

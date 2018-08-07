@@ -36,10 +36,9 @@ typedef enum {
 
 //sandBox
 @protocol SandBoxHanlderProtocol <NSObject>
--(void)saveContent:(NSObject*)content IntoSandBoxForItem:(ItemObject*)item;
+- (void)saveContent:(NSData *)contentData IntoSandBoxForItem:(ItemObject *)item;
 - (void)saveDataWithImage:(NSData*)data IntoSandBoxForItem:(ItemObject *)item;
--(UIImage*)fetchImageFromSandBoxForItem:(ItemObject*)item;  //returns image
--(ItemObject*)fetchContentfromSandBox:(ItemObject*)item;    //returns audio or video content
+- (UIImage*)fetchImageFromSandBoxForItem:(ItemObject*)item;  //returns image
 @end
 
 //downloading
@@ -48,7 +47,7 @@ typedef enum {
         withCompletionBlock:(void(^)(NSData*data)) completion;
 - (void)cancelTasksThatDontNeedToBeDone:(ItemObject*)task;
 -(void)downloadContentForItem:(ItemObject*)item;
--(void)downloadXMLWithURL:(NSURL*)url withCompletionHandler:(void(^)(NSData* data)) completion;
+-(void)downloadXMLFileFormURL:(NSString *)stringUrl withCompletionBlock:(void (^)(NSData *))completionBlock;
 @end
 
 
@@ -57,6 +56,5 @@ typedef enum {
 +(ServiceManager*)sharedManager;
 -(void)downloadAndParseFileFromURL:(NSURL*)url withType:(SourceType)sourceType;
 @property (weak, nonatomic) id<ServiceDownloadDelegate> delegate;
-
 
 @end

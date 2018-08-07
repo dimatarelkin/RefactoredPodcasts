@@ -12,6 +12,7 @@
 
 @interface Downloader() <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate>
 @property (strong, nonatomic) NSMutableDictionary* operations;
+@property (strong, nonatomic) ItemObject* currentItemForContent;
 @end
 
 @implementation Downloader
@@ -27,7 +28,7 @@
     return downloader;
 }
 
-
+/********* Previous *********
 -(void)downloadImageForItem:(ItemObject*)item withImageQuality:(ImageQuality)quality
         withCompletionBlock:(void(^)(NSData*data)) completion {
    
@@ -52,9 +53,8 @@
         if (weakOperation.isCancelled == NO) {
             dispatch_async(queue, ^{
                 NSData* data = [NSData dataWithContentsOfURL:url];
-                
+                  [[SandBoxManager sharedSandBoxManager] saveDataWithImage:data IntoSandBoxForItem:item];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[SandBoxManager sharedSandBoxManager] saveDataWithImage:data IntoSandBoxForItem:item];
                     completion(data);
                 });
             });
@@ -66,14 +66,64 @@
     [operation start];
 
 }
+*/
+
+-(void)downloadImageForItem:(ItemObject*)item withImageQuality:(ImageQuality)quality
+        withCompletionBlock:(void(^)(NSData*data)) completion {
+    
+    NSURL *url;
+    if (item.sourceType == MP3SourceType) {
+        url = [NSURL URLWithString: [NSString stringWithFormat:@"%@",item.image.webLink]];
+    } else {
+        url = [NSURL URLWithString: [NSString stringWithFormat:@"%@w=%d",item.image.webLink,quality]];
+    }
+    
+    NSBlockOperation *operation = [[NSBlockOperation alloc] init];
+    [operation addExecutionBlock:^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData* data = [NSData dataWithContentsOfURL:url];
+                [[SandBoxManager sharedSandBoxManager] saveDataWithImage:data IntoSandBoxForItem:item];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(data);
+                });
+            });
+    }];
+    
+    [operation setName:item.guiD];
+    [self.operations setObject:operation forKey:operation.name];
+    [operation start];
+}
+
+
+-(void)downloadXMLFileFormURL:(NSString *)stringUrl withCompletionBlock:(void (^)(NSData *))completionBlock {
+    NSURL *url = [NSURL URLWithString:stringUrl];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithURL:url completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error == nil) {
+            NSData *data = [NSData dataWithContentsOfURL:location];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(data);
+            });
+        } else {
+            NSLog(@"Error: %@", [error localizedDescription]);
+        }
+        [session invalidateAndCancel];
+    }];
+    [task resume];
+}
 
 
 - (void)cancelTasksThatDontNeedToBeDone:(ItemObject*)task {
-    [[self.operations objectForKey:task.guiD] cancel];
-
-//     NSLog(@"operation before cancelled: %@",[self.operations objectForKey:task.guiD]);
-//    [self.operations removeObjectForKey:task.guiD];
-//    NSLog(@"operation cancelled: %@",self.operations);
+    
+    [self.operations enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        if ([obj isEqual: [self.operations objectForKey:task.guiD]]) {
+            [[self.operations objectForKey:key] cancel];
+            [self.operations removeObjectForKey:key];
+            obj = nil;
+            NSLog(@"Operation is cancelled");
+        }
+    }];
 }
 
 
@@ -81,6 +131,7 @@
 
 
 #warning download the video
+
 
 -(void)downloadContentForItem:(ItemObject*)item {
     NSURL *url = [NSURL URLWithString:item.content.webLink];
@@ -92,10 +143,9 @@
 
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
     NSURLSessionDownloadTask* downloadTask = [session downloadTaskWithURL:url];
+    
     [downloadTask resume];
 }
-
-
 
 
 
@@ -106,17 +156,21 @@
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
     
     if (totalBytesExpectedToWrite > 0) {
-        float progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
-        NSLog(@"Progress %@ : %.3f", [downloadTask description], progress);
+        float progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite * 100;
+        NSLog(@"Progress %@ : %f", [downloadTask description], progress);
     }
 }
 
+
 -(void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask* )downloadTask didFinishDownloadingToURL:(NSURL *)location {
-
-}
-
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    NSLog(@"location : %@", location.absoluteString);
+    NSData *data = [NSData dataWithContentsOfFile:location.relativePath];
+    [[NSFileManager defaultManager] removeItemAtPath:location.absoluteString error:nil];
     
+    [self.delegate contentDownloadingWasfinishedWithData:data];
+    self.delegate = nil;
+    [session invalidateAndCancel];
 }
+
 
 @end

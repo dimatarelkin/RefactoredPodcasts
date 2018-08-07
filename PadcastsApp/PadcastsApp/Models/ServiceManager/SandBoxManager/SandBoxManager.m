@@ -18,7 +18,8 @@
 
 @implementation SandBoxManager
 
-static NSString * const kDirectory = @"Images";
+static NSString * const kImagesDirectory = @"Images";
+static NSString * const kContentDirectory = @"Content";
 
 
 +(SandBoxManager*)sharedSandBoxManager {
@@ -36,7 +37,8 @@ static NSString * const kDirectory = @"Images";
     if (self) {
         _fileManager = [NSFileManager defaultManager];
         _directory = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-        [self createDirectoryWithPath:[NSString stringWithFormat:@"/%@", kDirectory]];
+        [self createDirectoryWithPath:[NSString stringWithFormat:@"/%@", kImagesDirectory]];
+        [self createDirectoryWithPath:[NSString stringWithFormat:@"/%@", kContentDirectory]];
     }
     return self;
 }
@@ -49,7 +51,7 @@ static NSString * const kDirectory = @"Images";
 
 
 - (void)saveDataWithImage:(NSData*)data IntoSandBoxForItem:(ItemObject *)item {
-    NSString* path = [self localFilePathForWebURL:item.image.webLink atDirectory:kDirectory];
+    NSString* path = [self localFilePathForWebURL:item.image.webLink atDirectory:kImagesDirectory];
     NSString *destinationPath = [self.directory stringByAppendingString:path];
     item.image.localLink = destinationPath;
     [self.fileManager createFileAtPath:destinationPath contents:data attributes:nil];
@@ -78,20 +80,20 @@ static NSString * const kDirectory = @"Images";
         NSData *data = [NSData dataWithContentsOfFile:item.image.localLink];
         return [UIImage imageWithData:data];
     } else {
-        NSLog(@"filie don't exists");
+        NSLog(@"file don't exists");
         return nil;
     }
 }
 
 
-#warning sandbox content downloading
-- (ItemObject *)fetchContentfromSandBox:(ItemObject *)item {
-    return item;
-}
+#pragma mark - Content Saving
 
-
-- (void)saveContent:(NSObject *)content IntoSandBoxForItem:(ItemObject *)item {
-    
+- (void)saveContent:(NSData *)contentData IntoSandBoxForItem:(ItemObject *)item {
+    NSString * path = [self localFilePathForWebURL:item.content.webLink atDirectory:kContentDirectory];
+    NSString * destinationPath = [self.directory stringByAppendingString:path];
+    item.content.localLink = destinationPath;
+    NSLog(@"video location %@", destinationPath);
+    [self.fileManager createFileAtPath:destinationPath contents:contentData attributes:nil];
 }
 
 

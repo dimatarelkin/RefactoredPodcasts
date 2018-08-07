@@ -8,31 +8,30 @@
 
 #import "DetailViewController.h"
 #import "ServiceManager.h"
+#import "Downloader.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
 
 
 
-@interface DetailViewController ()
+@interface DetailViewController () <ContentDownloadingDelegate>
 
 @property (assign, nonatomic) SourceType itemType;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
-
 @property (strong, nonatomic) UILabel *authorLabel;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UILabel *detailsLabel;
-
 @property (strong, nonatomic) UIButton *downloadButton;
-
 @property (strong, nonatomic) UIStackView* stackView;
 @property (strong, nonatomic) ItemObject* item;
 @property (strong, nonatomic) UIImageView* playImgView;
+@property (strong, nonatomic) UILabel * emptyLabel;
 
 @property (strong, nonatomic) NSLayoutConstraint *changableConstraint;
 
--(void)playAudio;
+
 -(void)downloadAction:(UIButton*)sender;
 @end
 
@@ -50,16 +49,42 @@ CGFloat multiplier = 0.5;
 }
 
 
+
 - (instancetype)init {
     self = [super init];
     if (self) {
         self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
         self.navigationItem.leftItemsSupplementBackButton = YES;
         self.view.backgroundColor = UIColor.whiteColor;
-        [self setupViews];
+//        [self setupViews];
+        [self setupEmptyLabel];
+        
+        [Downloader sharedDownloader].delegate = self;
     }
     return self;
 }
+
+
+-(void)setupEmptyLabel {
+    self.emptyLabel = [[UILabel alloc] init];
+    self.emptyLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.emptyLabel.font = [UIFont systemFontOfSize:30 weight:UIFontWeightBold];
+    self.emptyLabel.text = @"Select Item";
+    self.emptyLabel.textColor = [UIColor lightGrayColor];
+    self.emptyLabel.textAlignment = NSTextAlignmentNatural;
+    self.emptyLabel.numberOfLines = 0;
+    self.emptyLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.emptyLabel];
+    
+    //setup Constraints
+    [NSLayoutConstraint activateConstraints:
+     @[
+       [self.emptyLabel.centerXAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.centerXAnchor constant:0],
+       [self.emptyLabel.centerYAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.centerYAnchor constant:0],
+       ]];
+}
+
+
 
 -(void)setupViews {
     [self setupScrollView];
@@ -97,6 +122,7 @@ CGFloat multiplier = 0.5;
     self.imageView.layer.shadowOpacity = 0.8;
     self.imageView.layer.backgroundColor = UIColor.blackColor.CGColor;
     [self.imageView setUserInteractionEnabled:YES];
+    
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(tapGestureHandle:)];
@@ -111,10 +137,7 @@ CGFloat multiplier = 0.5;
     self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     UIFont* gillSans = [UIFont fontWithName:@"GillSans-Bold" size:26];
     self.titleLabel.font = gillSans;
-    
-    
-    
-    self.titleLabel.text = @"Title Details I have a simple requirement, I want to have color change effect on UIButton when a user touch on button";
+    self.titleLabel.text = @"Title Details";
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.textAlignment = NSTextAlignmentNatural;
     self.titleLabel.numberOfLines = 0;
@@ -146,7 +169,7 @@ CGFloat multiplier = 0.5;
     self.downloadButton.titleLabel.font = [UIFont fontWithName:@"Futura-Bold" size:20];;
     self.downloadButton.backgroundColor = UIColor.whiteColor;
     self.downloadButton.layer.cornerRadius = 10;
-    [self.downloadButton setTitle:@"Download" forState:UIControlStateNormal];
+    [self.downloadButton setTitle:@"Save" forState:UIControlStateNormal];
     [self.downloadButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
 
     self.downloadButton.layer.borderWidth = 1;
@@ -216,22 +239,27 @@ CGFloat multiplier = 0.5;
 #pragma mark - SizeClasses
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     NSLog(@"trait collection did change");
-    [NSLayoutConstraint deactivateConstraints:@[self.changableConstraint]];
+
+    if (self.changableConstraint) {
+        [NSLayoutConstraint deactivateConstraints:@[self.changableConstraint]];
     
-    if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact &&
-        self.view.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) {
-        
-        self.changableConstraint = [self.imageView.heightAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.heightAnchor multiplier:1];
-    } else {
-        self.changableConstraint = [self.imageView.heightAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.heightAnchor multiplier:0.5];
+        if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact &&
+            self.view.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassCompact) {
+            
+            self.changableConstraint = [self.imageView.heightAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.heightAnchor multiplier:1];
+        } else {
+            self.changableConstraint = [self.imageView.heightAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.heightAnchor multiplier:0.5];
+        }
+        [NSLayoutConstraint activateConstraints:@[self.changableConstraint]];
     }
-    [NSLayoutConstraint activateConstraints:@[self.changableConstraint]];
 }
 
 
 
 #pragma mark - Delegate
 - (void)itemWasSelected:(ItemObject *)item {
+    [self.emptyLabel setHidden:YES];
+    [self setupViews];
 
     [[ServiceManager sharedManager] downloadImageForItem:item withImageQuality:ImageQualityHigh withCompletionBlock:^(NSData *data) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -251,9 +279,9 @@ CGFloat multiplier = 0.5;
     self.item = item;
     
     if (item.isSaved) {
-        [self.downloadButton setTitle:@"Saved" forState:UIControlStateNormal];
+        [self.downloadButton setTitle:@"Remove" forState:UIControlStateNormal];
     }else {
-        [self.downloadButton setTitle:@"Download" forState:UIControlStateNormal];
+        [self.downloadButton setTitle:@"Save" forState:UIControlStateNormal];
     }
         
 }
@@ -264,7 +292,7 @@ CGFloat multiplier = 0.5;
 -(void)tapGestureHandle:(UITapGestureRecognizer*)tap {
     AVPlayer *player;
     if (self.item.isSaved) {
-         player = [AVPlayer playerWithURL:[NSURL URLWithString:self.item.content.webLink]]; //localLink for offLine mode
+         player = [AVPlayer playerWithURL:[NSURL URLWithString:self.item.content.localLink]]; 
     } else {
          player = [AVPlayer playerWithURL:[NSURL URLWithString:self.item.content.webLink]];
     }
@@ -278,10 +306,6 @@ CGFloat multiplier = 0.5;
     NSLog(@"playing video");
 }
 
--(void)playAudioWithURL:(NSURL*)url {
-
-}
-
 
 
 -(void)downloadAction:(UIButton*)button {
@@ -290,14 +314,14 @@ CGFloat multiplier = 0.5;
     
     if (_item.isSaved == NO) {
         _item.isSaved = YES;
-        [self.downloadButton setTitle:@"Saved" forState:UIControlStateNormal];
+        [self.downloadButton setTitle:@"Remove" forState:UIControlStateNormal];
         [[ServiceManager sharedManager] saveItemIntoCoreData:_item];
-
-//      [[ServiceManager sharedManager] downloadContentForItem:_item];
+        [[ServiceManager sharedManager] downloadContentForItem:_item];
+        
     } else {
         [[ServiceManager sharedManager] deleteItemFromCoredata:_item];
         _item.isSaved = NO;
-        [self.downloadButton setTitle:@"Download" forState:UIControlStateNormal];
+        [self.downloadButton setTitle:@"Save" forState:UIControlStateNormal];
     }
     
     [[ServiceManager sharedManager].delegate reloadChangedDataOfCollectionView];
@@ -317,5 +341,16 @@ CGFloat multiplier = 0.5;
         }];
     }
 }
+
+
+#pragma mark Delegate
+- (void)contentDownloadingWasfinishedWithData:(NSData *)data {
+    [[ServiceManager sharedManager] saveContent:data IntoSandBoxForItem:self.item];
+    //update coreItem in Core Data
+    [[ServiceManager sharedManager]updateDataAndSetLocalLinks:self.item];
+    NSLog(@"Video is on vc");
+}
+
+
 
 @end

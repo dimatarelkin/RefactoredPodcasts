@@ -35,10 +35,6 @@
 
 #pragma mark - XMLParser + ParserDelegate
 
--(void)downloadXMLWithURL:(NSURL*)url withCompletionHandler:(void(^)(NSData* data)) completion {
-    
-}
-
 -(void)downloadAndParseFileFromURL:(NSURL*)url withType:(SourceType)sourceType {
     self.parser = [[Parser alloc] init];
     self.parser.delegate = self;
@@ -50,6 +46,7 @@
     //inform the delegate(tableView)
     [self.delegate downloadingWasFinished:result];
 }
+
 
 
 #pragma mark - CoreData offline mode
@@ -86,16 +83,12 @@
     return  [[SandBoxManager sharedSandBoxManager] fetchImageFromSandBoxForItem:item];
 }
 
-- (void)saveContent:(NSObject *)content IntoSandBoxForItem:(ItemObject *)item {
-    [[SandBoxManager sharedSandBoxManager] saveContent:content IntoSandBoxForItem:item];
+- (void)saveContent:(NSData *)contentData IntoSandBoxForItem:(ItemObject *)item{
+    [[SandBoxManager sharedSandBoxManager] saveContent:contentData IntoSandBoxForItem:item];
 }
 
 - (void)saveDataWithImage:(NSData*)data IntoSandBoxForItem:(ItemObject *)item{
     [[SandBoxManager sharedSandBoxManager] saveDataWithImage:data IntoSandBoxForItem:item];
-}
-
-- (ItemObject *)fetchContentfromSandBox:(ItemObject *)item {
-    return [[SandBoxManager sharedSandBoxManager] fetchContentfromSandBox:item];
 }
 
 
@@ -113,6 +106,10 @@
 
 - (void)cancelTasksThatDontNeedToBeDone:(ItemObject*)task {
     [[Downloader sharedDownloader]cancelTasksThatDontNeedToBeDone:task];
+}
+
+-(void)downloadXMLFileFormURL:(NSString *)stringUrl withCompletionBlock:(void (^)(NSData *))completionBlock {
+    [[Downloader sharedDownloader] downloadXMLFileFormURL:stringUrl withCompletionBlock:completionBlock];
 }
 
 -(void)downloadContentForItem:(ItemObject*)item {
