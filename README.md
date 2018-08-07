@@ -9,4 +9,4 @@ fixed isues:
 7)fixed issue with video downloading in background
 
 not fixed:
-7)issue with cell reusing not resolved (can't cancel some operations) :(
+8)issue with cell reusing not resolved (can't cancel some operations) :(
