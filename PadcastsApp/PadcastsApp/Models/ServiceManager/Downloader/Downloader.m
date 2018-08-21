@@ -12,6 +12,7 @@
 
 @interface Downloader() <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate>
 @property (strong, nonatomic) NSMutableDictionary* operations;
+@property (strong, nonatomic) NSOperationQueue* currentQueue;
 @property (strong, nonatomic) ItemObject* currentItemForContent;
 @end
 
@@ -24,6 +25,8 @@
     dispatch_once(&onceToken, ^{
         downloader = [[Downloader alloc] init];
         downloader.operations = [NSMutableDictionary dictionary];
+        downloader.currentQueue = [[NSOperationQueue alloc] init];
+        downloader.currentQueue.maxConcurrentOperationCount = 10;
     });
     return downloader;
 }
@@ -78,22 +81,22 @@
         url = [NSURL URLWithString: [NSString stringWithFormat:@"%@w=%d",item.image.webLink,quality]];
     }
     
-    NSBlockOperation *operation = [[NSBlockOperation alloc] init];
-    [operation addExecutionBlock:^{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSData* data = [NSData dataWithContentsOfURL:url];
-                [[SandBoxManager sharedSandBoxManager] saveDataWithImage:data IntoSandBoxForItem:item];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(data);
-                });
-            });
+  
+    [self.currentQueue addOperationWithBlock:^{
+        NSData* data = [NSData dataWithContentsOfURL:url];
+        [[SandBoxManager sharedSandBoxManager] saveDataWithImage:data IntoSandBoxForItem:item];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(data);
+            NSLog(@"Operation is ended");
+        });
     }];
     
-    [operation setName:item.guiD];
-    [self.operations setObject:operation forKey:operation.name];
-    [operation start];
 }
 
+- (void)cancelTasksThatDontNeedToBeDone:(ItemObject*)task {
+    [self.currentQueue cancelAllOperations];
+    NSLog(@"canctl all operations");
+}
 
 -(void)downloadXMLFileFormURL:(NSString *)stringUrl withCompletionBlock:(void (^)(NSData *))completionBlock {
     NSURL *url = [NSURL URLWithString:stringUrl];
@@ -112,20 +115,6 @@
     }];
     [task resume];
 }
-
-
-- (void)cancelTasksThatDontNeedToBeDone:(ItemObject*)task {
-    
-    [self.operations enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        if ([obj isEqual: [self.operations objectForKey:task.guiD]]) {
-            [[self.operations objectForKey:key] cancel];
-            [self.operations removeObjectForKey:key];
-            obj = nil;
-            NSLog(@"Operation is cancelled");
-        }
-    }];
-}
-
 
 
 
