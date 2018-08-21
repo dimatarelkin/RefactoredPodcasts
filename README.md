@@ -10,4 +10,4 @@ fixed isues:
 8)add empty label when Item is not selected
 
 not fixed:
-8)issue with cell reusing not resolved (can't cancel some operations) :(
+9)issue with cell reusing not resolved (can't cancel some operations) :(
